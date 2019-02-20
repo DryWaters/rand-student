@@ -1,0 +1,11 @@
+import React from 'react';
+import Student from './Student'
+import styles from './StudentContainer.module.css';
+
+const StudentContainer = (props) => (
+  <div className={styles.container}>
+    {props.students.map(student => <Student student={student} key={student.id} />)}
+  </div>
+)
+
+export default StudentContainer;

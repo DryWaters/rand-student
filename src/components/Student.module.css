@@ -1,0 +1,18 @@
+.student {
+  font-size: 4em;
+  width: 10%;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  font-weight: bold;
+  border: solid black 5px;
+}
+
+.picked {
+  background-color: #222;
+  color: #333;
+}
+
+.unpicked {
+  background-color: white;
+}

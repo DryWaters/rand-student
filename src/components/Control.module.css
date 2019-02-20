@@ -1,0 +1,8 @@
+.control {
+  justify-content: center;
+  width: 20%;
+  background-color: yellow;
+  padding: 20px;
+  margin: 10px;
+  font-size: 3em;
+}
