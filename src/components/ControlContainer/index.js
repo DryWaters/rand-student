@@ -1,7 +1,7 @@
 import React from 'react';
-import Control from './Control'
+import Control from '../Control'
 import { Input, Label } from 'reactstrap';
-import styles from './ControlContainer.module.css';
+import styles from '../../styles/components/ControlContainer/ControlContainer.module.css';
 
 const ControlContainer = ({controls, numStudents, updateStudents, speech}) => (
   <div className={styles.container}>

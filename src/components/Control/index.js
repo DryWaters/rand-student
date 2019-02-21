@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './Control.module.css';
+import styles from '../../styles/components/Control/Control.module.css';
 import { Button } from 'reactstrap';
-import '../assets/css/fontello.css'
+import '../../assets/css/fontello.css'
 
 const soundIcon = (speech) => {
   if (speech) {

@@ -1,8 +1,8 @@
 import React from 'react';
-import ControlContainer from './ControlContainer';
-import StudentContainer from './StudentContainer';
-import styles from './Dashboard.module.css';
-import StudentModal from './StudentModal';
+import ControlContainer from '../ControlContainer';
+import StudentContainer from '../StudentContainer';
+import styles from '../../styles/components/Dashboard/Dashboard.module.css';
+import StudentModal from '../StudentModal';
 
 const numStudents = 30;
 

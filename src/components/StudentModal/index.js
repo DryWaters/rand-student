@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import styles from './StudentModal.module.css';
+import styles from '../../styles/components/StudentModal/StudentModal.module.css';
 
 const StudentModal = ({ toggleModal, showModal, id }) => (
   <div>
