@@ -64,7 +64,7 @@ class Dashboard extends React.Component {
   }
 
   updateStudents(numStudents) {
-    if (!isNaN(parseInt(numStudents) && parseInt(numStudents) > 0)) {
+    if (!isNaN(parseInt(numStudents)) && parseInt(numStudents) > 0) {
       const intStudents = parseInt(numStudents);
       this.setState(() => this.createStudents(intStudents))
     }
