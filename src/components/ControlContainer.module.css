@@ -7,3 +7,22 @@
   background-color: #91bbff;
   padding: 20px;
 }
+
+.label {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.numberPicker {
+  flex: 0.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.input {
+  text-align: center;
+  font-size: 1.5em;
+}

@@ -14,6 +14,7 @@ class Dashboard extends React.Component {
     this.pickStudent = this.pickStudent.bind(this);
     this.saveList = this.saveList.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.updateStudents = this.updateStudents.bind(this);
 
     const controls = [
       { name: 'Pick Student', action: this.pickStudent },
@@ -52,8 +53,11 @@ class Dashboard extends React.Component {
     alert('Saving...');
   }
 
-  updateNumberStudents(numStudents) {
-    this.setState(() => this.createStudents(numStudents))
+  updateStudents(numStudents) {
+    if (!isNaN(parseInt(numStudents))) {
+      const intStudents = parseInt(numStudents);
+      this.setState(() => this.createStudents(intStudents))
+    }
   }
 
   createStudents(numStudents) {
@@ -62,14 +66,14 @@ class Dashboard extends React.Component {
       isPicked: false
     }));
     const unpickedStudents = new Array(numStudents).fill().map((_, index) => index + 1);
-
-    return { students, unpickedStudents };
+    console.log(students);
+    return { students, unpickedStudents, numStudents, lastId: 0 };
   }
 
   render() {
     return (
       <div styles={styles.dashboard}>
-        <ControlContainer controls={this.state.controls} />
+        <ControlContainer controls={this.state.controls} numStudents={this.state.numStudents} updateStudents={this.updateStudents} />
         <StudentContainer students={this.state.students} />
         <StudentModal toggleModal={this.toggleModal} showModal={this.state.showModal} id={this.state.lastId} />
       </div >
