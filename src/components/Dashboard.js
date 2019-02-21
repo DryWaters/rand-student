@@ -76,7 +76,6 @@ class Dashboard extends React.Component {
       isPicked: false
     }));
     const unpickedStudents = new Array(numStudents).fill().map((_, index) => index + 1);
-    console.log(students);
     return { students, unpickedStudents, numStudents, lastId: 0 };
   }
 
