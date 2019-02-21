@@ -4,3 +4,11 @@
   margin: 10px;
   font-size: 3em;
 }
+
+@media all and (max-width: 736px) { 
+  .control {
+    width: 300px;
+    font-size: 2em;
+  }
+
+}

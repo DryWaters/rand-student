@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard from './components/Dashboard';
 import * as serviceWorker from './serviceWorker';
-import './normalize.css';
+import './assets/css/normalize.css';
 
 ReactDOM.render(<Dashboard />, document.getElementById('root'));
 
