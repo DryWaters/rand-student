@@ -16,11 +16,12 @@ class Dashboard extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.updateStudents = this.updateStudents.bind(this);
     this.toggleSpeech = this.toggleSpeech.bind(this);
+    this.toggleStudent = this.toggleStudent.bind(this);
 
     const controls = [
-      { name: 'Pick Student', action: this.pickStudent},
-      { name: 'Save List', action: this.saveList},
-      { name: 'Sound', action: this.toggleSpeech}
+      { name: 'Pick Student', action: this.pickStudent },
+      { name: 'Save List', action: this.saveList },
+      { name: 'Sound', action: this.toggleSpeech }
     ];
 
     this.state = Object.assign({}, { numStudents, controls, showModal: false, lastId: 0, speech: true }, this.createStudents(numStudents))
@@ -68,12 +69,12 @@ class Dashboard extends React.Component {
   }
 
   saveList() {
-      var a = document.createElement("a");
-      var file = new Blob([this.createCSV()], {type: "text/csv"});
-      a.href = URL.createObjectURL(file);
-      a.download = "students.csv";
-      a.click();
-      a = null;
+    var a = document.createElement("a");
+    var file = new Blob([this.createCSV()], { type: "text/csv" });
+    a.href = URL.createObjectURL(file);
+    a.download = "students.csv";
+    a.click();
+    a = null;
   }
 
   createCSV() {
@@ -98,11 +99,39 @@ class Dashboard extends React.Component {
     return { students, unpickedStudents, numStudents, lastId: 0 };
   }
 
+  toggleStudent(selStudent) {
+    if (selStudent.isPicked) {
+      this.setState(prevState => {
+        const newUnpickedStudents = [...prevState.unpickedStudents, selStudent.id];
+        const newStudents = prevState.students.map(student => {
+          if (student.id === selStudent.id) {
+            return { ...student, isPicked: false }
+          } else {
+            return { ...student }
+          }
+        });
+        return { ...prevState, unpickedStudents: newUnpickedStudents, students: newStudents }
+      });
+    } else {
+      this.setState(prevState => {
+        const newUnpickedStudents = prevState.unpickedStudents.filter(id => id !== selStudent.id)
+        const newStudents = prevState.students.map(student => {
+          if (student.id === selStudent.id) {
+            return { ...student, isPicked: true }
+          } else {
+            return { ...student }
+          }
+        });
+        return { ...prevState, unpickedStudents: newUnpickedStudents, students: newStudents }
+      })
+    }
+  }
+
   render() {
     return (
       <div styles={styles.dashboard}>
         <ControlContainer controls={this.state.controls} numStudents={this.state.numStudents} updateStudents={this.updateStudents} speech={this.state.speech} />
-        <StudentContainer students={this.state.students} />
+        <StudentContainer students={this.state.students} toggleStudent={this.toggleStudent} />
         <StudentModal toggleModal={this.toggleModal} showModal={this.state.showModal} id={this.state.lastId} />
       </div >
     )
