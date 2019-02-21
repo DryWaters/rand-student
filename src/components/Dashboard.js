@@ -2,6 +2,7 @@ import React from 'react';
 import ControlContainer from './ControlContainer';
 import StudentContainer from './StudentContainer';
 import styles from './Dashboard.module.css';
+import StudentModal from './StudentModal';
 
 const numStudents = 30;
 
@@ -12,35 +13,39 @@ class Dashboard extends React.Component {
 
     this.pickStudent = this.pickStudent.bind(this);
     this.saveList = this.saveList.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
 
     const controls = [
       { name: 'Pick Student', action: this.pickStudent },
       { name: 'Save List', action: this.saveList },
     ];
 
-    this.state = Object.assign({}, { numStudents }, this.createStudents(numStudents), { controls })
+    this.state = Object.assign({}, { numStudents, controls, showModal: false, lastId: 0 }, this.createStudents(numStudents))
 
   }
 
   pickStudent() {
     if (this.state.unpickedStudents.length !== 0) {
-      this.setState((state) => {
+      this.setState((prevState) => {
         const rndIndex = ~~(Math.random() * this.state.unpickedStudents.length);
-        const studentId = state.unpickedStudents[rndIndex];
-        const newUnpickedStudents = state.unpickedStudents.filter((_, idx) => idx !== rndIndex)
-        const newStudents = state.students.map(student => {
+        const studentId = prevState.unpickedStudents[rndIndex];
+        const newUnpickedStudents = prevState.unpickedStudents.filter((_, idx) => idx !== rndIndex)
+        const newStudents = prevState.students.map(student => {
           if (student.id === studentId) {
             return { ...student, isPicked: true }
           } else {
             return { ...student }
           }
         })
-
-        return { ...state, students: newStudents, unpickedStudents: newUnpickedStudents };
+        return { ...prevState, showModal: true, lastId: studentId, students: newStudents, unpickedStudents: newUnpickedStudents };
       });
     } else {
       alert('Out of students');
     }
+  }
+
+  toggleModal() {
+    this.setState(prevState => ({ showModal: !prevState.showModal }));
   }
 
   saveList() {
@@ -66,6 +71,7 @@ class Dashboard extends React.Component {
       <div styles={styles.dashboard}>
         <ControlContainer controls={this.state.controls} />
         <StudentContainer students={this.state.students} />
+        <StudentModal toggleModal={this.toggleModal} showModal={this.state.showModal} id={this.state.lastId} />
       </div >
     )
   }
