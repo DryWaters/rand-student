@@ -15,13 +15,15 @@ class Dashboard extends React.Component {
     this.saveList = this.saveList.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.updateStudents = this.updateStudents.bind(this);
+    this.toggleSpeech = this.toggleSpeech.bind(this);
 
     const controls = [
-      { name: 'Pick Student', action: this.pickStudent },
-      { name: 'Save List', action: this.saveList },
+      { name: 'Pick Student', action: this.pickStudent},
+      { name: 'Save List', action: this.saveList},
+      { name: 'Sound', action: this.toggleSpeech}
     ];
 
-    this.state = Object.assign({}, { numStudents, controls, showModal: false, lastId: 0 }, this.createStudents(numStudents))
+    this.state = Object.assign({}, { numStudents, controls, showModal: false, lastId: 0, speech: true }, this.createStudents(numStudents))
   }
 
   pickStudent() {
@@ -29,6 +31,9 @@ class Dashboard extends React.Component {
       this.setState((prevState) => {
         const rndIndex = ~~(Math.random() * this.state.unpickedStudents.length);
         const studentId = prevState.unpickedStudents[rndIndex];
+        if (prevState.speech && 'speechSynthesis' in window) {
+          this.speak(studentId);
+        }
         const newUnpickedStudents = prevState.unpickedStudents.filter((_, idx) => idx !== rndIndex)
         const newStudents = prevState.students.map(student => {
           if (student.id === studentId) {
@@ -42,6 +47,20 @@ class Dashboard extends React.Component {
     } else {
       alert('Out of students');
     }
+  }
+
+  toggleSpeech() {
+    this.setState(prevState => ({ speech: !prevState.speech }));
+  }
+
+  speak(studentId) {
+    var msg = new SpeechSynthesisUtterance();
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[0];
+    msg.text = "" + studentId;
+    msg.lang = 'en-US';
+    msg.volume = 1
+    speechSynthesis.speak(msg);
   }
 
   toggleModal() {
@@ -82,7 +101,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div styles={styles.dashboard}>
-        <ControlContainer controls={this.state.controls} numStudents={this.state.numStudents} updateStudents={this.updateStudents} />
+        <ControlContainer controls={this.state.controls} numStudents={this.state.numStudents} updateStudents={this.updateStudents} speech={this.state.speech} />
         <StudentContainer students={this.state.students} />
         <StudentModal toggleModal={this.toggleModal} showModal={this.state.showModal} id={this.state.lastId} />
       </div >
