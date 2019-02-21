@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
 
     const controls = [
       { name: 'Pick Student', action: this.pickStudent },
-      { name: 'Save List', action: this.saveList }
+      { name: 'Save List', action: this.saveList },
     ];
 
     this.state = {
@@ -31,32 +31,37 @@ class Dashboard extends React.Component {
 
   pickStudent() {
     if (this.state.unpickedStudents.length !== 0) {
-      const index = ~~(Math.random() * this.state.unpickedStudents.length);
       this.setState((state) => {
-        const oldUnpickedStudents = state.unpickedStudents.splice(index, 1);
-        console.log(oldUnpickedStudents);
-        console.log(index);
-        const oldStudents = state.students.slice();
-        oldStudents[index].isPicked = true;
-        return {...state, students: oldStudents};
-      });
-    } else {
-      alert('Out of students');
-    }
+        const rndIndex = ~~(Math.random() * this.state.unpickedStudents.length);
+        const studentId = state.unpickedStudents[rndIndex];
+        const newUnpickedStudents = state.unpickedStudents.filter((_, idx) => idx !== rndIndex)
+        const newStudents = state.students.map(student => {
+          if (student.id === studentId) {
+            return { ...student, isPicked: true }
+          } else {
+            return {...student}
+          }
+      })
+
+    return { ...state, students: newStudents, unpickedStudents: newUnpickedStudents };
+    });
+  } else {
+  alert('Out of students');
+}
   }
 
-  saveList() {
-    alert('Saving...');
-  }
+saveList() {
+  alert('Saving...');
+}
 
-  render() {
-    return (
-      <div styles={styles.dashboard}>
-        <ControlContainer controls={this.state.controls} />
-        <StudentContainer students={this.state.students} />
-      </div >
-    )
-  }
+render() {
+  return (
+    <div styles={styles.dashboard}>
+      <ControlContainer controls={this.state.controls} />
+      <StudentContainer students={this.state.students} />
+    </div >
+  )
+}
 }
 
 export default Dashboard;
