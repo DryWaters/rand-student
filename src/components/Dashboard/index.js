@@ -4,7 +4,13 @@ import StudentContainer from '../StudentContainer';
 import styles from '../../styles/components/Dashboard/Dashboard.module.css';
 import StudentModal from '../StudentModal';
 
-const numStudents = 30;
+const constants = {
+  defaultNumStudents: 30,
+  minStudents: 0,
+  maxStudents: 100,
+  minSection: 1,
+  maxSection: 3
+}
 
 class Dashboard extends React.Component {
 
@@ -17,14 +23,35 @@ class Dashboard extends React.Component {
     this.updateStudents = this.updateStudents.bind(this);
     this.toggleSpeech = this.toggleSpeech.bind(this);
     this.toggleStudent = this.toggleStudent.bind(this);
+    this.updateSection = this.updateSection.bind(this);
 
-    const controls = [
+    this.buttons = [
       { name: 'Pick Student', action: this.pickStudent },
       { name: 'Save List', action: this.saveList },
       { name: 'Sound', action: this.toggleSpeech }
     ];
 
-    this.state = Object.assign({}, { numStudents, controls, showModal: false, lastId: 0, speech: true }, this.createStudents(numStudents))
+    this.inputs = [
+      { name: 'Section', min: constants.minSection, max: constants.maxSection, action: this.updateSection },
+      { name: 'Students', min: constants.minStudents, max: constants.maxStudents, action: this.updateStudents }
+    ];
+
+    this.state = Object.assign({},
+      {
+        numStudents: constants.defaultNumStudents,
+        section: constants.minSection,
+        showModal: false,
+        lastId: 0,
+        speech: true,
+      }, this.createStudents(constants.defaultNumStudents))
+
+  }
+
+  updateSection(section) {
+    const intSection = parseInt(section);
+    if (!isNaN(intSection) && intSection >= constants.minSection && intSection <= constants.maxSection) {
+      this.setState(() => ({ section: intSection }));
+    }
   }
 
   pickStudent() {
@@ -84,7 +111,8 @@ class Dashboard extends React.Component {
   }
 
   updateStudents(numStudents) {
-    if (!isNaN(parseInt(numStudents)) && parseInt(numStudents) > 0) {
+    const intStudents = parseInt(numStudents);
+    if (!isNaN(intStudents) && intStudents >= constants.minStudents && intStudents <= constants.maxStudents) {
       const intStudents = parseInt(numStudents);
       this.setState(() => this.createStudents(intStudents))
     }
@@ -130,7 +158,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div styles={styles.dashboard}>
-        <ControlContainer controls={this.state.controls} numStudents={this.state.numStudents} updateStudents={this.updateStudents} speech={this.state.speech} />
+        <ControlContainer buttons={this.buttons} inputs={this.inputs} section={this.state.section} numStudents={this.state.numStudents} speech={this.state.speech} />
         <StudentContainer students={this.state.students} toggleStudent={this.toggleStudent} />
         <StudentModal toggleModal={this.toggleModal} showModal={this.state.showModal} id={this.state.lastId} />
       </div >

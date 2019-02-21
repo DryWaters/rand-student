@@ -5,7 +5,11 @@ import Dashboard from './components/Dashboard';
 import * as serviceWorker from './serviceWorker';
 import './styles/main/css/normalize.css';
 
-ReactDOM.render(<Dashboard />, document.getElementById('root'));
+if (typeof(localStorage) !== 'undefined') {
+    ReactDOM.render(<Dashboard />, document.getElementById('root'));
+} else {
+    alert ('LocalStorage required for presistent data.  Please use a newer browser.');
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -1,4 +1,4 @@
-.control {
+.btn {
   justify-content: center;
   padding: 20px;
   margin: 10px;
@@ -6,7 +6,7 @@
 }
 
 @media all and (max-width: 736px) { 
-  .control {
+  .btn {
     width: 300px;
     font-size: 2em;
   }
