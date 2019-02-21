@@ -50,7 +50,18 @@ class Dashboard extends React.Component {
   }
 
   saveList() {
-    alert('Saving...');
+      var a = document.createElement("a");
+      var file = new Blob([this.createCSV()], {type: "text/csv"});
+      a.href = URL.createObjectURL(file);
+      a.download = "students.csv";
+      a.click();
+      a = null;
+  }
+
+  createCSV() {
+    let output = (new Date()).toLocaleTimeString() + '\npicked students';
+    output += this.state.students.filter(student => student.isPicked).map(student => `\n${student.id}`)
+    return output
   }
 
   updateStudents(numStudents) {
