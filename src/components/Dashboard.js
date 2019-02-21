@@ -3,12 +3,6 @@ import ControlContainer from './ControlContainer';
 import StudentContainer from './StudentContainer';
 import styles from './Dashboard.module.css';
 
-const students = new Array(31).fill().map((_, index) => ({
-  id: index + 1,
-  isPicked: false
-}));
-const unpickedStudents = new Array(31).fill().map((_, index) => index + 1);
-
 class Dashboard extends React.Component {
 
   constructor(props) {
@@ -22,11 +16,8 @@ class Dashboard extends React.Component {
       { name: 'Save List', action: this.saveList },
     ];
 
-    this.state = {
-      students,
-      controls,
-      unpickedStudents
-    }
+    this.state = Object.assign({}, { numStudents: 30 }, this.createStudents(30), { controls })
+
   }
 
   pickStudent() {
@@ -39,29 +30,43 @@ class Dashboard extends React.Component {
           if (student.id === studentId) {
             return { ...student, isPicked: true }
           } else {
-            return {...student}
+            return { ...student }
           }
-      })
+        })
 
-    return { ...state, students: newStudents, unpickedStudents: newUnpickedStudents };
-    });
-  } else {
-  alert('Out of students');
-}
+        return { ...state, students: newStudents, unpickedStudents: newUnpickedStudents };
+      });
+    } else {
+      alert('Out of students');
+    }
   }
 
-saveList() {
-  alert('Saving...');
-}
+  saveList() {
+    alert('Saving...');
+  }
 
-render() {
-  return (
-    <div styles={styles.dashboard}>
-      <ControlContainer controls={this.state.controls} />
-      <StudentContainer students={this.state.students} />
-    </div >
-  )
-}
+  updateNumberStudents(numStudents) {
+    this.setState(() => this.createStudents(numStudents))
+  }
+
+  createStudents(numStudents) {
+    const students = new Array(numStudents).fill().map((_, index) => ({
+      id: index + 1,
+      isPicked: false
+    }));
+    const unpickedStudents = new Array(numStudents).fill().map((_, index) => index + 1);
+
+    return { students, unpickedStudents };
+  }
+
+  render() {
+    return (
+      <div styles={styles.dashboard}>
+        <ControlContainer controls={this.state.controls} />
+        <StudentContainer students={this.state.students} />
+      </div >
+    )
+  }
 }
 
 export default Dashboard;
