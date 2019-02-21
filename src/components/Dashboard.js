@@ -22,7 +22,6 @@ class Dashboard extends React.Component {
     ];
 
     this.state = Object.assign({}, { numStudents, controls, showModal: false, lastId: 0 }, this.createStudents(numStudents))
-
   }
 
   pickStudent() {
@@ -65,7 +64,7 @@ class Dashboard extends React.Component {
   }
 
   updateStudents(numStudents) {
-    if (!isNaN(parseInt(numStudents))) {
+    if (!isNaN(parseInt(numStudents) && parseInt(numStudents) > 0)) {
       const intStudents = parseInt(numStudents);
       this.setState(() => this.createStudents(intStudents))
     }
