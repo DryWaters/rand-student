@@ -3,6 +3,8 @@ import ControlContainer from './ControlContainer';
 import StudentContainer from './StudentContainer';
 import styles from './Dashboard.module.css';
 
+const numStudents = 30;
+
 class Dashboard extends React.Component {
 
   constructor(props) {
@@ -16,7 +18,7 @@ class Dashboard extends React.Component {
       { name: 'Save List', action: this.saveList },
     ];
 
-    this.state = Object.assign({}, { numStudents: 30 }, this.createStudents(30), { controls })
+    this.state = Object.assign({}, { numStudents }, this.createStudents(numStudents), { controls })
 
   }
 

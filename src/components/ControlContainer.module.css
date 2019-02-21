@@ -4,5 +4,6 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background-color: green;
+  background-color: #91bbff;
+  padding: 20px;
 }
