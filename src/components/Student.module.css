@@ -1,6 +1,7 @@
 .student {
   font-size: 4em;
   width: 10%;
+  min-width: 140px;
   padding: 20px;
   margin: 10px;
   text-align: center;
