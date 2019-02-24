@@ -23,3 +23,8 @@
 .unpicked {
   background-color: white;
 }
+
+.selected {
+  background-color: green;
+  color: black;
+}

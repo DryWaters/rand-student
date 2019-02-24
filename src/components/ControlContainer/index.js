@@ -6,7 +6,7 @@ import styles from '../../styles/components/ControlContainer/ControlContainer.mo
 const ControlContainer = ({ buttons, inputs, numStudents, section, speech }) => (
   <div className={styles.container}>
     <ButtonContainer buttons={buttons} speech={speech} />
-    <InputContainer inputs={inputs} numStudents={numStudents} section={section}/>
+    <InputContainer inputs={inputs} numStudents={numStudents} section={section} />
   </div>
 );
 
