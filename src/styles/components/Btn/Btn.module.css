@@ -1,8 +1,8 @@
 .btn {
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   margin: 10px;
-  font-size: 3em;
+  font-size: 1.5em;
 }
 
 @media all and (max-width: 736px) { 
