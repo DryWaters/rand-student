@@ -1,28 +1,42 @@
 .inputDiv {
     width: 100%;
-    text-align: center;
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+    line-height: 2em;
 }
 
 .label {
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: bold;
-    text-align: center;
+    margin-left: 20px;
 }
   
 .input {
+    margin-left: 10px;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1em;
+    width: 100px;
 }
 
 @media all and (max-width: 736px) { 
+
+    .inputDiv {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+
     .label {
         text-align: center;
         width: 300px;
+        margin: 0;
     }
 
     .input {
         width: 300px;
         text-align: center;
+        margin: 0;
     }
   
   }
