@@ -1,6 +1,8 @@
 import React from 'react';
-import styles from '../styles/components/Btn.module.css';
 import { Button } from 'reactstrap';
+import { connect } from 'react-redux';
+import { toggleSpeech, pickStudent, saveList } from '../actions/student';
+import styles from '../styles/components/Btn.module.css';
 import '../styles/base/fontello.css'
 
 const selectSoundIcon = (speech) => {
@@ -11,9 +13,9 @@ const selectSoundIcon = (speech) => {
   }
 };
 
-const Btn = ({ name, speech, action }) => (
-  <Button color="primary" size="lg" className={styles.btn} onClick={action}>
-    {name === 'Sound' ? selectSoundIcon(speech) : name}
+export const Btn = (props) => (
+  <Button color="primary" size="lg" className={styles.btn} onClick={props.action} >
+    {props.name === 'Sound' ? selectSoundIcon(props.speech) : props.name}
   </Button>
 );
 

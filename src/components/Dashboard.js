@@ -17,12 +17,6 @@ class Dashboard extends React.Component {
     this._toggleStudent = this._toggleStudent.bind(this);
     this._updateSection = this._updateSection.bind(this);
 
-    this.buttons = [
-      { name: 'Pick Student', action: this._pickStudent },
-      { name: 'Save List', action: this._saveList },
-      { name: 'Sound', action: this._toggleSpeech }
-    ];
-
     this.inputs = [
       { name: 'Section', min: constants.minSection, max: constants.maxSection, action: this._updateSection },
       { name: 'Students', min: constants.minStudents, max: constants.maxStudents, action: this._updateStudents }
@@ -155,7 +149,7 @@ class Dashboard extends React.Component {
       status: 'unpicked'
     }));
     const unpickedStudents = new Array(numStudents).fill().map((_, index) => index + 1);
-    return { students, unpickedStudents, numStudents };
+    return { students, unpickedStudents };
   }
 
   // method that toggles if user wants speech enabled
@@ -208,8 +202,8 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div styles={styles.dashboard}>
-        <ControlContainer buttons={this.buttons} inputs={this.inputs} section={this.state.section} numStudents={this.state.numStudents} speech={this.state.speech} />
-        <StudentContainer students={this.state.students} toggleStudent={this._toggleStudent} />
+        <ControlContainer inputs={this.inputs} section={this.state.section} numStudents={this.state.numStudents} />
+        <StudentContainer />
       </div >
     )
   }

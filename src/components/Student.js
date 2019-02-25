@@ -12,7 +12,7 @@ const selectStyle = (status) => {
 };
 
 const Student = ({ student, toggleStudent }) => (
-  <div className={`${styles.student} ${selectStyle(student.status)}`} onClick={() => toggleStudent(student)}>
+  <div className={`${styles.student} ${selectStyle(student.status)}`} onClick={() => toggleStudent(student.id)}>
     <p className={styles.studentId}>{student.id}</p>
   </div>
 );
