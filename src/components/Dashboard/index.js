@@ -1,15 +1,9 @@
 import React from 'react';
 import ControlContainer from '../ControlContainer';
 import StudentContainer from '../StudentContainer';
+import lsUtils from '../../utils/localstorageUtils';
+import constants from '../../utils/constants'
 import styles from '../../styles/components/Dashboard/Dashboard.module.css';
-
-const constants = {
-  defaultNumStudents: 30,
-  minStudents: 0,
-  maxStudents: 100,
-  minSection: 1,
-  maxSection: 3
-}
 
 class Dashboard extends React.Component {
 
@@ -39,8 +33,36 @@ class Dashboard extends React.Component {
         numStudents: constants.defaultNumStudents,
         section: constants.minSection,
         speech: true,
+        day: new Date().getDate()
       }, this.createStudents(constants.defaultNumStudents))
 
+  }
+
+  componentDidMount() {
+    if (this.shouldLoadSection(constants.minSection)) {
+      this.loadSection(constants.minSection);
+    }
+  }
+
+  shouldLoadSection(section) {
+    const lsAvailable = lsUtils.isLocalStorageAvailable();
+    this.setState(() => ({ lsAvailable }));
+    return lsAvailable && lsUtils.isSectionCurrent(section);
+  }
+
+  loadSection(section) {
+    const oldState = lsUtils.loadSection(section);
+    this.setState(() => oldState);
+  }
+
+  saveSection() {
+    if (this.state.lsAvailable) {
+      lsUtils.saveSection(this.state);
+    }
+  }
+
+  componentDidUpdate() {
+    this.saveSection()
   }
 
   // method for picking a random student
@@ -111,19 +133,9 @@ class Dashboard extends React.Component {
 
   // method to save the current section of picked students to a CSV file
   _saveList() {
-    var a = document.createElement("a");
-    var file = new Blob([this.createCSV()], { type: "text/csv" });
-    a.href = URL.createObjectURL(file);
-    a.download = "students.csv";
-    a.click();
-    a = null;
-  }
-
-  // helper function to create the output of the CSV string
-  createCSV() {
-    let output = (new Date()).toLocaleTimeString() + '\npicked students';
-    output += this.state.students.filter(student => student.isPicked).map(student => `\n${student.id}`)
-    return output
+    if (this.state.lsAvailable) {
+      lsUtils.saveList()
+    }
   }
 
   // method to create a new list of students if valid amount in range, set in constants
@@ -184,16 +196,14 @@ class Dashboard extends React.Component {
   _updateSection(section) {
     const intSection = parseInt(section);
     if (!isNaN(intSection) && intSection >= constants.minSection && intSection <= constants.maxSection) {
-      this.setState(() => ({ section: intSection }));
+      if (this.shouldLoadSection(section)) {
+        this.loadSection(section);
+      } else {
+        this._updateStudents(constants.defaultNumStudents);
+        this.setState(() => ({ section: intSection }));
+      }
     }
   }
-
-
-
-
-
-
-
 
   render() {
     return (
