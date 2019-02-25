@@ -20,18 +20,18 @@ export const toggleStudent = (id) => {
       newUnpickedStudents = [...getState().unpickedStudents, id];
     } else {
       newStudents[id - 1].status = 'picked';
-      newUnpickedStudents.filter(pickedId => pickedId !== id);
-      console.log(newUnpickedStudents);
+      newUnpickedStudents = [...getState().unpickedStudents].filter(pickedId => pickedId !== id);
     }
     dispatch({
       type: ACTION_TYPES.TOGGLE_STUDENT,
       payload: {
         students: newStudents,
-        unpickedStudents: newUnpickedStudents
+        unpickedStudents: newUnpickedStudents,
+        numStudents: newUnpickedStudents.length
       }
     });
   }
-}
+};
 
 export const pickStudent = () => {
   return (dispatch, getState) => {
@@ -63,7 +63,7 @@ export const pickStudent = () => {
       });
 
       // set student from selected to picked after 5 seconds
-      // setTimeout(clearStudentSelectedState.bind(this, studentId), 5000);
+      setTimeout(clearStudentSelectedState.bind(this, { dispatch, studentId, newStudents }), 5000);
 
       // set the state with the selected student, removed from possible students
       dispatch({
@@ -74,8 +74,7 @@ export const pickStudent = () => {
           numStudents: newUnpickedStudents.length
         }
       });
-    } else {
-      alert('Out of students');
+
     }
   }
 };
@@ -97,18 +96,16 @@ export const updateSection = () => {
 }
 
 // helper function that changes student status from selected to picked 
-const clearStudentSelectedState = (studentId) => {
-  this.setState(prevState => {
-    const newStudents = prevState.students.map(student => {
-      if (student.id === studentId) {
-        return { ...student, status: 'picked' }
-      } else {
-        return { ...student }
-      }
-    });
-    return { students: newStudents }
+const clearStudentSelectedState = ({ dispatch, studentId, newStudents }) => {
+  const clearedStudents = newStudents.slice();
+  clearedStudents[studentId - 1].status = 'picked'
+  return dispatch({
+    type: ACTION_TYPES.PICK_STUDENT,
+    payload: {
+      students: clearedStudents
+    }
   });
-}
+};
 
 // helper function to speak the student id
 const speak = (studentId) => {
@@ -119,4 +116,4 @@ const speak = (studentId) => {
   msg.lang = 'en-US';
   msg.volume = 1
   speechSynthesis.speak(msg);
-}
+};

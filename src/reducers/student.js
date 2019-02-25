@@ -16,16 +16,9 @@ const studentReducerDefaultState = {
 export default (state = studentReducerDefaultState, action) => {
   switch (action.type) {
     case ACTION_TYPES.TOGGLE_SPEECH:
-      return {
-        ...state,
-        ...action.payload
-      }
     case ACTION_TYPES.TOGGLE_STUDENT:
-      return {
-        ...state,
-        ...action.payload
-      }
     case ACTION_TYPES.PICK_STUDENT:
+    case ACTION_TYPES.CLEAR_STUDENT:
       return {
         ...state,
         ...action.payload
