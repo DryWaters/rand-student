@@ -1,6 +1,6 @@
 import React from 'react';
-import Student from '../Student'
-import styles from '../../styles/components/StudentContainer/StudentContainer.module.css';
+import Student from './Student'
+import styles from '../styles/components/StudentContainer.module.css';
 
 const StudentContainer = (props) => (
   <div className={styles.container}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/components/Student/Student.module.css';
+import styles from '../styles/components/Student.module.css';
 
 const selectStyle = (status) => {
   if (status === 'unpicked') {

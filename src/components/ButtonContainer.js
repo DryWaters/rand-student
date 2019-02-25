@@ -1,6 +1,6 @@
 import React from 'react';
-import Btn from '../Btn';
-import styles from '../../styles/components/ButtonContainer/ButtonContainer.module.css';
+import Btn from './Btn';
+import styles from '../styles/components/ButtonContainer.module.css';
 
 const ButtonContainer = ({ buttons, speech }) => (
   <div className={styles.container}>

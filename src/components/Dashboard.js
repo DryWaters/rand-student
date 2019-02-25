@@ -1,9 +1,9 @@
 import React from 'react';
-import ControlContainer from '../ControlContainer';
-import StudentContainer from '../StudentContainer';
-import lsUtils from '../../utils/localstorageUtils';
-import constants from '../../utils/constants'
-import styles from '../../styles/components/Dashboard/Dashboard.module.css';
+import ControlContainer from './ControlContainer';
+import StudentContainer from './StudentContainer';
+import lsUtils from '../utils/localstorageUtils';
+import constants from '../utils/constants'
+import styles from '../styles/components/Dashboard.module.css';
 
 class Dashboard extends React.Component {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Label } from 'reactstrap';
-import styles from '../../styles/components/NumberInput/NumberInput.module.css';
+import styles from '../styles/components/NumberInput.module.css';
 
 const NumberInput = ({ name, min, max, value, action }) => (
   <div className={styles.inputDiv}>

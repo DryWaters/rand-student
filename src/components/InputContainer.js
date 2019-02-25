@@ -1,6 +1,6 @@
 import React from 'react';
-import NumberInput from '../NumberInput';
-import styles from '../../styles/components/InputContainer/InputContainer.module.css';
+import NumberInput from './NumberInput';
+import styles from '../styles/components/InputContainer.module.css';
 
 const InputContainer = ({ inputs, numStudents, section }) => (
   <div className={styles.container}>
