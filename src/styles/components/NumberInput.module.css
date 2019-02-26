@@ -1,5 +1,4 @@
 .inputDiv {
-    width: 100%;
     display: flex;
     align-content: space-between;
     justify-content: center;
@@ -16,7 +15,6 @@
     margin-left: 10px;
     text-align: center;
     font-size: 1em;
-    width: 100px;
 }
 
 @media all and (max-width: 736px) { 
@@ -39,4 +37,4 @@
         margin: 0;
     }
   
-  }
+}

@@ -1,14 +1,18 @@
 import ACTION_TYPES from '../actions/actionTypes';
+import lsUtils from '../utils/localstorageUtils';
 import constants from '../utils/constants'
 
 export const toggleSpeech = () => {
   return (dispatch, getState) => {
+
+    const payload = {
+      speech: !getState().speech
+    };
+
     dispatch({
       type: ACTION_TYPES.TOGGLE_SPEECH,
-      payload: {
-        speech: !getState().speech
-      }
-    })
+      payload
+    });
   }
 };
 
@@ -23,13 +27,15 @@ export const toggleStudent = (id) => {
       newStudents[id - 1].status = 'picked';
       newUnpickedStudents = [...getState().unpickedStudents].filter(pickedId => pickedId !== id);
     }
+
+    const payload = {
+      students: newStudents,
+      unpickedStudents: newUnpickedStudents,
+    };
+
     dispatch({
       type: ACTION_TYPES.TOGGLE_STUDENT,
-      payload: {
-        students: newStudents,
-        unpickedStudents: newUnpickedStudents,
-        numStudents: newUnpickedStudents.length
-      }
+      payload
     });
   }
 };
@@ -64,39 +70,52 @@ export const pickStudent = () => {
       });
 
       // set student from selected to picked after 5 seconds
-      setTimeout(clearStudentSelectedState.bind(this, { dispatch, studentId, newStudents }), 5000);
+      setTimeout(clearStudentSelectedState.bind(this, { dispatch, studentId, getState }), 5000);
+
+      const payload = {
+        students: newStudents,
+        unpickedStudents: newUnpickedStudents,
+      }
 
       // set the state with the selected student, removed from possible students
       dispatch({
         type: ACTION_TYPES.PICK_STUDENT,
-        payload: {
-          students: newStudents,
-          unpickedStudents: newUnpickedStudents,
-          numStudents: newUnpickedStudents.length
-        }
+        payload: payload
       });
-
     }
   }
 };
 
-export const setLocalStorage = () => {
+const clearStudentSelectedState = ({ dispatch, studentId, getState }) => {
+  const clearedStudents = getState().students.slice();
+  clearedStudents[studentId - 1].status = 'picked'
 
-}
+  const payload = {
+    students: clearedStudents
+  }
+
+  return dispatch({
+    type: ACTION_TYPES.PICK_STUDENT,
+    payload
+  });
+};
 
 export const loadSection = () => {
 
 }
 
 export const updateStudents = (numStudents) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const intStudents = parseInt(numStudents);
     if (!isNaN(intStudents) && intStudents >= constants.minStudents && intStudents <= constants.maxStudents) {
+
+      const payload = Object.assign({}, {
+        numStudents: intStudents,
+      }, createStudents(intStudents))
+
       dispatch({
         type: ACTION_TYPES.UPDATE_STUDENTS,
-        payload: Object.assign({}, {
-          numStudents: intStudents,
-        }, createStudents(intStudents))
+        payload
       });
     }
   }
@@ -106,36 +125,19 @@ export const updateSection = (section) => {
   return (dispatch) => {
     const intSection = parseInt(section);
     if (!isNaN(intSection) && intSection >= constants.minSection && intSection <= constants.maxSection) {
+
+      const payload = {
+        section: intSection
+      }
+
       dispatch({
         type: ACTION_TYPES.UPDATE_SECTION,
-        payload: {
-          section: intSection
-        }
+        payload
       });
     }
-
-    // if (this.shouldLoadSection(section)) {
-    //   this.loadSection(section);
-    // } else {
-    //   this._updateStudents(constants.defaultNumStudents);
-    //   this.setState(() => ({ section: intSection }));
-    // }
   }
 }
 
-// helper function that changes student status from selected to picked 
-const clearStudentSelectedState = ({ dispatch, studentId, newStudents }) => {
-  const clearedStudents = newStudents.slice();
-  clearedStudents[studentId - 1].status = 'picked'
-  return dispatch({
-    type: ACTION_TYPES.PICK_STUDENT,
-    payload: {
-      students: clearedStudents
-    }
-  });
-};
-
-// helper function to speak the student id
 const speak = (studentId) => {
   var msg = new SpeechSynthesisUtterance();
   var voices = window.speechSynthesis.getVoices();
@@ -153,5 +155,11 @@ export const createStudents = (numStudents) => {
       status: 'unpicked'
     })),
     unpickedStudents: new Array(numStudents).fill().map((_, index) => index + 1)
+  }
+}
+
+export const saveList = () => {
+  if (lsUtils.isLocalStorageAvailable()) {
+    lsUtils.saveList()
   }
 }

@@ -24,7 +24,9 @@ const loadSection = (section) => {
 }
 
 const saveSection = (state) => {
-  localStorage.setItem(state.section, JSON.stringify({ ...state, day: new Date().getDate() }));
+  if (isLocalStorageAvailable()) {
+    localStorage.setItem(state.section, JSON.stringify({ ...state, day: new Date().getDate() }));
+  }
 }
 
 const saveList = () => {

@@ -8,8 +8,8 @@ export const ButtonContainer = (props) => {
 
   const buttons = [
     { name: 'Pick Student', action: props.pickStudent },
-    { name: 'Sound', action: props.toggleSpeech }
-    // { name: 'Save List', action: props.saveList() },
+    { name: 'Sound', action: props.toggleSpeech },
+    { name: 'Save List', action: props.saveList },
   ];
 
   return (
@@ -25,8 +25,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toggleSpeech: () => dispatch(toggleSpeech()),
-  pickStudent: () => dispatch(pickStudent())
-  // saveList: dispatch(saveList()),
+  pickStudent: () => dispatch(pickStudent()),
+  saveList: () => saveList(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ButtonContainer);

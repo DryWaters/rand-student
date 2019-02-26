@@ -1,7 +1,5 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import { connect } from 'react-redux';
-import { toggleSpeech, pickStudent, saveList } from '../actions/student';
 import styles from '../styles/components/Btn.module.css';
 import '../styles/base/fontello.css'
 
