@@ -1,10 +1,9 @@
-import ACTION_TYPES from '../actions/actionTypes';
-import lsUtils from '../utils/localstorageUtils';
-import constants from '../utils/constants'
+import * as ACTION_TYPES from '../actions/actionTypes';
+import * as lsUtils from '../utils/localstorageUtils';
+import CONSTANTS from '../utils/constants'
 
 export const toggleSpeech = () => {
   return (dispatch, getState) => {
-
     const payload = {
       speech: !getState().speech
     };
@@ -20,6 +19,8 @@ export const toggleStudent = (id) => {
   return (dispatch, getState) => {
     const newStudents = [...getState().students];
     let newUnpickedStudents;
+
+    // if student was already picked, then change to unpicked
     if (newStudents[id - 1].status === 'picked') {
       newStudents[id - 1].status = 'unpicked';
       newUnpickedStudents = [...getState().unpickedStudents, id];
@@ -43,8 +44,8 @@ export const toggleStudent = (id) => {
 export const pickStudent = () => {
   return (dispatch, getState) => {
     const state = getState();
-
     const length = state.unpickedStudents.length;
+
     // if still have a student that can be picked
     if (length !== 0) {
 
@@ -70,14 +71,13 @@ export const pickStudent = () => {
       });
 
       // set student from selected to picked after 5 seconds
-      setTimeout(clearStudentSelectedState.bind(this, { dispatch, studentId, getState }), 5000);
+      setTimeout(clearStudentSelectedState.bind(this, { dispatch, studentId, getState }), CONSTANTS.timeoutTime);
 
       const payload = {
         students: newStudents,
         unpickedStudents: newUnpickedStudents,
       }
 
-      // set the state with the selected student, removed from possible students
       dispatch({
         type: ACTION_TYPES.PICK_STUDENT,
         payload: payload
@@ -86,6 +86,7 @@ export const pickStudent = () => {
   }
 };
 
+// helper callback function to set selected student to picked
 const clearStudentSelectedState = ({ dispatch, studentId, getState }) => {
   const clearedStudents = getState().students.slice();
   clearedStudents[studentId - 1].status = 'picked'
@@ -100,15 +101,10 @@ const clearStudentSelectedState = ({ dispatch, studentId, getState }) => {
   });
 };
 
-export const loadSection = () => {
-
-}
-
 export const updateStudents = (numStudents) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const intStudents = parseInt(numStudents);
-    if (!isNaN(intStudents) && intStudents >= constants.minStudents && intStudents <= constants.maxStudents) {
-
+    if (!isNaN(intStudents) && intStudents >= CONSTANTS.minStudents && intStudents <= CONSTANTS.maxStudents) {
       const payload = Object.assign({}, {
         numStudents: intStudents,
       }, createStudents(intStudents))
@@ -124,10 +120,21 @@ export const updateStudents = (numStudents) => {
 export const updateSection = (section) => {
   return (dispatch) => {
     const intSection = parseInt(section);
-    if (!isNaN(intSection) && intSection >= constants.minSection && intSection <= constants.maxSection) {
 
-      const payload = {
-        section: intSection
+    if (!isNaN(intSection) && intSection >= CONSTANTS.minSection && intSection <= CONSTANTS.maxSection) {
+      let payload;
+
+      // if current section's date is same as today's date, load that section
+      if (lsUtils.isSectionCurrent(intSection)) {
+        const oldState = lsUtils.loadSection(intSection);
+        payload = {
+          section: intSection,
+          numStudents: oldState.numStudents,
+          students: oldState.students,
+          unpickedStudents: oldState.unpickedStudents
+        }
+      } else {
+        payload = Object.assign({}, createStudents(CONSTANTS.defaultNumStudents), { section: intSection })
       }
 
       dispatch({
@@ -138,6 +145,7 @@ export const updateSection = (section) => {
   }
 }
 
+// helper function to speak out the ID
 const speak = (studentId) => {
   var msg = new SpeechSynthesisUtterance();
   var voices = window.speechSynthesis.getVoices();
@@ -148,13 +156,15 @@ const speak = (studentId) => {
   speechSynthesis.speak(msg);
 };
 
+// helper function to create arrays of students
 export const createStudents = (numStudents) => {
   return {
     students: new Array(numStudents).fill().map((_, index) => ({
       id: index + 1,
       status: 'unpicked'
     })),
-    unpickedStudents: new Array(numStudents).fill().map((_, index) => index + 1)
+    unpickedStudents: new Array(numStudents).fill().map((_, index) => index + 1),
+    numStudents
   }
 }
 

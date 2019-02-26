@@ -1,6 +1,6 @@
-import constants from './constants';
+import CONSTANTS from './constants';
 
-const isLocalStorageAvailable = () => {
+export const isLocalStorageAvailable = () => {
   if (typeof localStorage === 'undefined') {
     alert('A browser with localstorage is required to use sections')
     return false;
@@ -8,7 +8,7 @@ const isLocalStorageAvailable = () => {
   return true;
 }
 
-const isSectionCurrent = (section) => {
+export const isSectionCurrent = (section) => {
   const currentDay = new Date().getDate();
 
   if (localStorage.getItem(section) === null || JSON.parse(localStorage.getItem(section)).day === null) {
@@ -19,17 +19,17 @@ const isSectionCurrent = (section) => {
   }
 }
 
-const loadSection = (section) => {
+export const loadSection = (section) => {
   return JSON.parse(localStorage.getItem(section));
 }
 
-const saveSection = (state) => {
+export const saveSection = (state) => {
   if (isLocalStorageAvailable()) {
     localStorage.setItem(state.section, JSON.stringify({ ...state, day: new Date().getDate() }));
   }
 }
 
-const saveList = () => {
+export const saveList = () => {
   var a = document.createElement("a");
   var file = new Blob([createList()], { type: "text/csv" });
   a.href = URL.createObjectURL(file);
@@ -40,7 +40,7 @@ const saveList = () => {
 
 const createList = () => {
   let output = `section,date,studentId\n`;
-  for (let i = constants.minSection; i <= constants.maxSection; i++) {
+  for (let i = CONSTANTS.minSection; i <= CONSTANTS.maxSection; i++) {
     if (isSectionCurrent(i)) {
       output += parseSection(i);
     }
@@ -52,5 +52,3 @@ const parseSection = (section) => {
   const { students } = loadSection(section);
   return students.filter(student => student.status === 'picked').map(student => `${section}, ${new Date().toLocaleDateString()}, ${student.id}\n`).join('');
 }
-
-export default { isLocalStorageAvailable, isSectionCurrent, loadSection, saveSection, saveList }

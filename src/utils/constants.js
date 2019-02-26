@@ -3,5 +3,6 @@ export default {
   minStudents: 1,
   maxStudents: 100,
   minSection: 1,
-  maxSection: 3
+  maxSection: 3,
+  timeoutTime: 5000
 }

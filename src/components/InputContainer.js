@@ -26,7 +26,6 @@ export const InputContainer = (props) => {
     </div>);
 }
 
-
 const mapStateToProps = (state) => ({
   numStudents: state.numStudents,
   section: state.section
