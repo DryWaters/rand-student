@@ -1,4 +1,5 @@
 import ACTION_TYPES from '../actions/actionTypes';
+import constants from '../utils/constants'
 
 export const toggleSpeech = () => {
   return (dispatch, getState) => {
@@ -87,12 +88,39 @@ export const loadSection = () => {
 
 }
 
-export const updateStudents = () => {
-
+export const updateStudents = (numStudents) => {
+  return (dispatch) => {
+    const intStudents = parseInt(numStudents);
+    if (!isNaN(intStudents) && intStudents >= constants.minStudents && intStudents <= constants.maxStudents) {
+      dispatch({
+        type: ACTION_TYPES.UPDATE_STUDENTS,
+        payload: Object.assign({}, {
+          numStudents: intStudents,
+        }, createStudents(intStudents))
+      });
+    }
+  }
 }
 
-export const updateSection = () => {
+export const updateSection = (section) => {
+  return (dispatch) => {
+    const intSection = parseInt(section);
+    if (!isNaN(intSection) && intSection >= constants.minSection && intSection <= constants.maxSection) {
+      dispatch({
+        type: ACTION_TYPES.UPDATE_SECTION,
+        payload: {
+          section: intSection
+        }
+      });
+    }
 
+    // if (this.shouldLoadSection(section)) {
+    //   this.loadSection(section);
+    // } else {
+    //   this._updateStudents(constants.defaultNumStudents);
+    //   this.setState(() => ({ section: intSection }));
+    // }
+  }
 }
 
 // helper function that changes student status from selected to picked 
@@ -117,3 +145,13 @@ const speak = (studentId) => {
   msg.volume = 1
   speechSynthesis.speak(msg);
 };
+
+export const createStudents = (numStudents) => {
+  return {
+    students: new Array(numStudents).fill().map((_, index) => ({
+      id: index + 1,
+      status: 'unpicked'
+    })),
+    unpickedStudents: new Array(numStudents).fill().map((_, index) => index + 1)
+  }
+}

@@ -3,10 +3,10 @@ import ButtonContainer from './ButtonContainer';
 import InputContainer from './InputContainer';
 import styles from '../styles/components/ControlContainer.module.css';
 
-const ControlContainer = ({ inputs, numStudents, section }) => (
+const ControlContainer = () => (
   <div className={styles.container}>
     <ButtonContainer />
-    <InputContainer inputs={inputs} numStudents={numStudents} section={section} />
+    <InputContainer />
   </div>
 );
 
